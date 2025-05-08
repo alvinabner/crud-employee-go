@@ -3,6 +3,7 @@ package main
 import (
 	"net/http"
 
+	"github.com/alvinabner/crud-employee-go/controller"
 	"github.com/alvinabner/crud-employee-go/database"
 )
 
@@ -11,10 +12,7 @@ func main() {
 
 	server := http.NewServeMux()
 
-	server.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		w.Write([]byte("hello world"))
-	})
+	server.HandleFunc("/", controller.NewHelloWorldController())
 
 	http.ListenAndServe(":8080", server)
-	// fmt.Println("Hello World")
 }
