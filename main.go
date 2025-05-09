@@ -3,8 +3,8 @@ package main
 import (
 	"net/http"
 
-	"github.com/alvinabner/crud-employee-go/controller"
 	"github.com/alvinabner/crud-employee-go/database"
+	"github.com/alvinabner/crud-employee-go/routes"
 )
 
 func main() {
@@ -12,7 +12,7 @@ func main() {
 
 	server := http.NewServeMux()
 
-	server.HandleFunc("/", controller.NewHelloWorldController())
+	routes.MapRoutes(server)
 
 	http.ListenAndServe(":8080", server)
 }
