@@ -9,4 +9,5 @@ import (
 func MapRoutes(server *http.ServeMux) {
 	server.HandleFunc("/", controller.NewHelloWorldController())
 	server.HandleFunc("/employee", controller.NewIndexEmployee())
+	server.HandleFunc("/employee/create", controller.NewCreateEmployeeController())
 }
