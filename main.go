@@ -9,11 +9,11 @@ import (
 )
 
 func main() {
-	database.InitDatabase()
+	db := database.InitDatabase()
 
 	server := http.NewServeMux()
 
-	routes.MapRoutes(server)
+	routes.MapRoutes(server, db)
 
 	fmt.Println("Server sedang berjalan di http://localhost:8080")
 	err := http.ListenAndServe(":8080", server)

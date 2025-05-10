@@ -18,10 +18,26 @@
     </nav>
 
     <div class="container my-5">
-        <div class="d-flex justify-content-between">
-            <h3>List Employee</h3>
-            <a href="/employee/create" class="btn btn-sm btn-primary">Tambah Data</a>
+        <div class="d-flex justify-content-between mb-4">
+          <h3>Form Karyawan</h3>
         </div>
+        <form action="/employee/create" method="POST">
+          <div class="mb-3">
+            <label for="name" class="form-label">Nama Karyawan</label>
+            <input type="text" name="name" id="name" class="form-control" />
+          </div>
+          <div class="mb-3">
+            <label for="npwp" class="form-label">NPWP</label>
+            <input type="text" name="npwp" id="npwp" class="form-control" />
+          </div>
+          <div class="mb-3">
+            <label for="address" class="form-label">Alamat</label>
+            <textarea name="address" id="address" class="form-control"></textarea>
+          </div>
+          <div class="mb-3">
+            <button type="submit" class="btn btn-primary btn-sm">Tambah</button>
+          </div>
+        </form>
     </div>
 
     <!-- <h1>Hello, world!</h1> -->
