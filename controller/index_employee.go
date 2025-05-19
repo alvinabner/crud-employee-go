@@ -14,6 +14,11 @@ type Employee struct {
 	Address string
 }
 
+type Task struct {
+	Id   string
+	Name string
+}
+
 func NewIndexEmployee(db *sql.DB) func(w http.ResponseWriter, r *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
 		rows, err := db.Query("SELECT id, name, npwp, address FROM employee")
@@ -29,12 +34,13 @@ func NewIndexEmployee(db *sql.DB) func(w http.ResponseWriter, r *http.Request) {
 		for rows.Next() {
 			var employee Employee
 
-			rows.Scan(
+			err = rows.Scan(
 				&employee.Id,
 				&employee.Name,
 				&employee.NPWP,
 				&employee.Address,
 			)
+
 			if err != nil {
 				w.Write([]byte(err.Error()))
 				w.WriteHeader(http.StatusInternalServerError)
@@ -45,6 +51,7 @@ func NewIndexEmployee(db *sql.DB) func(w http.ResponseWriter, r *http.Request) {
 		}
 
 		fp := filepath.Join("views", "index.html")
+
 		tmpl, err := template.ParseFiles(fp)
 
 		if err != nil {
@@ -53,7 +60,10 @@ func NewIndexEmployee(db *sql.DB) func(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		err = tmpl.Execute(w, nil)
+		data := make(map[string]any)
+		data["employees"] = employees
+
+		err = tmpl.Execute(w, data)
 		if err != nil {
 			w.Write([]byte(err.Error()))
 			w.WriteHeader(http.StatusInternalServerError)

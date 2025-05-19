@@ -32,11 +32,13 @@
             </tr>
           </thead>
           <tbody>
+            {{ range $index, $employee := .employees }}
             <tr>
-              <td>TEST DATA</td>
-              <td>123123123</td>
-              <td>Surabaya</td>
+              <td>{{ $employee.Name }}</td>
+              <td>{{ $employee.NPWP }}</td>
+              <td>{{ $employee.Address }}</td>
             </tr>
+            {{ end }}
           </tbody>
         </table>
     </div>
