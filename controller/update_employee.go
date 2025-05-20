@@ -7,7 +7,7 @@ import (
 	"path/filepath"
 )
 
-func NewUpdateEmployeeController(db *sql.DB) func(w http.ResponseWriter, r *http.Request) {
+func NewCreateEmployeeController(db *sql.DB) func(w http.ResponseWriter, r *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
 		if r.Method == "POST" {
 			r.ParseForm()
