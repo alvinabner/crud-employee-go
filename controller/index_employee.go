@@ -14,11 +14,6 @@ type Employee struct {
 	Address string
 }
 
-type Task struct {
-	Id   string
-	Name string
-}
-
 func NewIndexEmployee(db *sql.DB) func(w http.ResponseWriter, r *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
 		rows, err := db.Query("SELECT id, name, npwp, address FROM employee")

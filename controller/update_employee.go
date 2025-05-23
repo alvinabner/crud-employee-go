@@ -7,7 +7,7 @@ import (
 	"path/filepath"
 )
 
-func NewCreateEmployeeController(db *sql.DB) func(w http.ResponseWriter, r *http.Request) {
+func NewUpdateEmployeeController(db *sql.DB) func(w http.ResponseWriter, r *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
 		if r.Method == "POST" {
 			r.ParseForm()
@@ -26,7 +26,30 @@ func NewCreateEmployeeController(db *sql.DB) func(w http.ResponseWriter, r *http
 			// w.Write([]byte("Test Post"))
 			return
 		} else if r.Method == "GET" {
-			fp := filepath.Join("views", "create.html")
+			id := r.URL.Query().Get("id")
+
+			row := db.QueryRow("SELECT name, npwp, address FROM employee WHERE id = ?", id)
+
+			if row.Err() != nil {
+				w.Write([]byte(row.Err().Error()))
+				w.WriteHeader(http.StatusInternalServerError)
+				return
+			}
+
+			var employee Employee
+			err := row.Scan(
+				&employee.Name,
+				&employee.NPWP,
+				&employee.Address,
+			)
+			employee.Id = id
+			if err != nil {
+				w.Write([]byte(row.Err().Error()))
+				w.WriteHeader(http.StatusInternalServerError)
+				return
+			}
+
+			fp := filepath.Join("views", "update.html")
 			tmpl, err := template.ParseFiles(fp)
 
 			if err != nil {
@@ -35,7 +58,10 @@ func NewCreateEmployeeController(db *sql.DB) func(w http.ResponseWriter, r *http
 				return
 			}
 
-			err = tmpl.Execute(w, nil)
+			data := make(map[string]any)
+			data["employee"] = employee
+
+			err = tmpl.Execute(w, data)
 			if err != nil {
 				w.Write([]byte(err.Error()))
 				w.WriteHeader(http.StatusInternalServerError)
